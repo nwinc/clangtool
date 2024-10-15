@@ -23,13 +23,13 @@ build_llvm()
         ninja -C $BUILD_DIR install
     else
         cmake -G "Ninja" \
-		    -S ${LLVM_SOURCE_DIR}/llvm \
-		    -B $BUILD_DIR \
+            -S ${LLVM_SOURCE_DIR}/llvm \
+            -B $BUILD_DIR \
             -DLLVM_ENABLE_PROJECTS="clang" \
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_TARGETS_TO_BUILD="X86" \
             -DCMAKE_CXX_COMPILER=clang++ \
-		    -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_C_COMPILER=clang \
             -DLLVM_BUILD_LLVM_DYLIB=ON \
             -DLLVM_LINK_LLVM_DYLIB=ON \
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
@@ -48,9 +48,9 @@ do_build()
     rm -rf $BUILD_DIR
 
     if [ "$ENABLE_CXX" = "yes" ]; then
-        cmake -B $BUILD_DIR -DLANGUAGE_MODE_CXX=ON
+        cmake -B $BUILD_DIR -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DLANGUAGE_MODE_CXX=ON
     else
-        cmake -B $BUILD_DIR
+        cmake -B $BUILD_DIR -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
     fi
 
     make -C $BUILD_DIR $CLANG_TOOL
